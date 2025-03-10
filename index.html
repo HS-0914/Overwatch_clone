@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오버워치 2</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://static.playoverwatch.com/img/favicon-2f5255d1c6.ico"
+    />
+    <script>
+      const heroData = [
+        {
+          title: "돌격",
+          description:
+            "돌격 영웅은 피해를 흡수하고 뭉쳐 있는 적들이나 비좁은 요충지와 같이 요새화된 거점을 무너뜨립니다. 돌격 영웅은 아군의 선두 자리에 서게 됩니다.",
+          image:
+            "https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt8d969bbc39c76f9a/6511fc19bcc2aed9ed6ef01b/Tank_Heroes_Desktop.png?format=webply&quality=90",
+        },
+        {
+          title: "공격",
+          description:
+            "공격 영웅은 다양한 장비와 기술, 플레이 스타일로 적을 찾아내 교전을 벌이고 제거합니다. 위협적인 동시에 처치당하기도 쉬운 공격 영웅이 생존하려면 지원이 필요합니다.",
+          image:
+            "https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt76e4f8bb95f57178/6511fc0b73d191129fb7f7ee/Damage_Heroes_Desktop.png?format=webply&quality=90",
+        },
+        {
+          title: "지원",
+          description:
+            "지원 영웅은 치유, 보호막, 공격력 증가, 적 무력화 등의 효과로 아군을 보조합니다. 지원 영웅은 팀이 생존하는 데 핵심적인 역할을 합니다.",
+          image:
+            "https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt3b04857628552b85/6511fc0b308f2b8397f075e0/Support_Heroes_Desktop.png?format=webply&quality=90",
+        },
+      ];
+
+      function changeHero(index) {
+        document.getElementById("hero-title").textContent =
+          heroData[index].title;
+        document.getElementById("hero-description").textContent =
+          heroData[index].description;
+        document.getElementById(
+          "hero-image"
+        ).style.backgroundImage = `url(${heroData[index].image})`;
+      }
+    </script>
+
+    <style>
+      @font-face {
+        font-family: "Koverwatch";
+        src: url("font/koverwatch.ttf");
+      }
+
+      * {
+        font-family: "Koverwatch", sans-serif;
+        letter-spacing: 0.075em;
+      }
+
+      /* CSS Reset */
+      body,
+      h1,
+      h2,
+      h3,
+      p,
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      body {
+        font-family: sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #fff;
+      }
+
+      /* Header Styles */
+      .header {
+        background-color: #f8f8f8;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+      }
+
+      .logo a {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+      }
+
+      .nav ul {
+        display: flex;
+      }
+
+      .nav li {
+        margin-left: 20px;
+      }
+
+      .nav a {
+        font-size: 25px;
+        color: #333;
+        text-decoration: none;
+      }
+
+      /* Hero Section Styles */
+      .hero {
+        position: relative;
+        width: 100%;
+        min-height: 600px;
+        height: 80vh;
+        overflow: hidden;
+      }
+
+      .background-video {
+        position: relative;
+        /* top: 50%; */
+        /* left: 50%; */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+        /* 콘텐츠 뒤로 배치 */
+      }
+
+      /* 어두운 효과를 위한 오버레이 */
+      .hero::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 70, 0.4);
+        /* 검은색 반투명 (0.5는 투명도 조절 가능) */
+        z-index: -1;
+        /* 비디오 위, 콘텐츠 아래 */
+      }
+
+      .hero_content {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        /* 세로 정렬 */
+        align-items: center;
+        /* 가로 중앙 정렬 */
+      }
+
+      .hero_content img {
+        width: 100%;
+      }
+
+      .hero_content button {
+        width: 192px;
+        height: 72px;
+        background-color: #f06414;
+        border: none;
+        font-size: 30px;
+        color: white;
+      }
+
+      .hero h1 {
+        font-size: 54px;
+        margin-top: 40px;
+        color: white;
+        font-weight: 100;
+        font-style: oblique;
+        letter-spacing: normal;
+      }
+
+      .hero p {
+        font-size: 27px;
+        margin-bottom: 30px;
+        color: white;
+      }
+
+      .game-section {
+        display: flex;
+        justify-content: center;
+        padding: 80px 40px;
+        background-size: cover;
+      }
+
+      .play-section {
+        background-image: url("https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt201f785832bf0a51/650ca73c9661937d201315ef/960_Silver_Background.jpg?format=webply&quality=90");
+      }
+
+      .season-section {
+        background-image: url("https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt21c03e7db865c58c/67abc614f36f5c642550cd5a/2600_S15_Overview.jpg?format=webply&quality=90");
+      }
+
+      .heros-section {
+        background-image: url("img/image_3.webp");
+      }
+
+      .info {
+        display: flex;
+        max-width: 1600px;
+        gap: 80px;
+      }
+
+      .info-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 40%;
+        text-align: left;
+      }
+
+      .info-text h2 {
+        font-size: 65px;
+        line-height: 105%;
+      }
+
+      .info-text h3 {
+        font-size: 41px;
+        line-height: 115%;
+      }
+
+      .info-text p {
+        margin-top: 20px;
+        font-size: 25px;
+        line-height: 115%;
+      }
+
+      .info-text-white {
+        color: white;
+      }
+
+      .game-video {
+        width: 60%;
+        aspect-ratio: 16 / 9;
+      }
+
+      .game-video iframe {
+        width: 100%;
+        height: 100%;
+      }
+
+      .heros-text {
+        color: white;
+      }
+
+      .heros-text h2 {
+        font-size: 65px;
+        margin-bottom: 40px;
+        letter-spacing: 0.1em;
+      }
+
+      .heros-text h3 {
+        font-size: 41px;
+        letter-spacing: 0.1em;
+      }
+
+      .heros-button button {
+        background-color: rgba(0, 0, 0, 0);
+        height: 65px;
+        width: 65;
+        padding: 14px;
+        position: relative;
+        border: none;
+      }
+
+      .heros-button button::before {
+        border: 2px solid hsla(0, 0%, 100%, 0.7);
+        border-radius: 50%;
+        bottom: 0;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      .heros-button button:hover {
+        cursor: pointer;
+      }
+
+      .heros-button {
+        display: flex;
+        width: 260px;
+        justify-content: space-between;
+        margin-bottom: 70px;
+      }
+
+      .heros-view {
+        margin-top: 40px;
+        width: fit-content;
+        padding: 20px 40px;
+        margin-bottom: 100px;
+        border: none;
+      }
+
+      .heros-view a {
+        font-size: 30px;
+        text-decoration: none;
+        color: black;
+      }
+
+      .heros-type {
+        display: flex;
+        justify-content: center;
+        width: 60%;
+      }
+
+      .heros-img {
+        position: relative;
+        padding-top: 91%;
+
+        /* background-image: url("img/Tank_-_Doomfist.webp"); */
+        background-image: url("https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt8d969bbc39c76f9a/6511fc19bcc2aed9ed6ef01b/Tank_Heroes_Desktop.png?format=webply&quality=90");
+        background-size: cover;
+        background-position: top;
+        background-repeat: no-repeat;
+        width: 100%;
+      }
+
+      /* Footer Styles */
+      .footer {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+        background: radial-gradient(
+          50% 252.84% at 50% 49.94%,
+          #242a42 7.27%,
+          #121524 100%
+        );
+      }
+
+      .footer-section {
+        width: 1400px;
+      }
+
+      .top-section {
+        display: flex;
+        padding: 80px 0 60px 0;
+      }
+
+      .top-right {
+        line-height: 1em;
+        font-size: 18px;
+        color: #ffffff80;
+        margin-left: 32px;
+      }
+
+      .top-info1 {
+        padding-left: 8px;
+      }
+
+      .top-info2 {
+        display: flex;
+        margin-top: 20px;
+      }
+
+      .top-info2 div {
+        color: white;
+        padding: 0 8px;
+      }
+
+      .footer-links {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .nav ul {
+          margin-top: 10px;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .nav li {
+          margin: 10px 0;
+        }
+
+        .hero h1 {
+          font-size: 60px;
+        }
+
+        .download-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .download-buttons img {
+          margin: 10px 0;
+        }
+
+        .game-list {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .about img {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="48"
+          height="48"
+          fill="none"
+          aria-labelledby="blz-icon-title-overwatch-2-dark"
+          viewBox="0 0 48 48"
+          part="icon"
+        >
+          <title id="blz-icon-title-overwatch-2-dark">Overwatch 2 Dark</title>
+          <path
+            fill="#ED6516"
+            d="M13.9 13.901a14.284 14.284 0 0 1 20.2 0l4.043-4.042a20 20 0 0 0-28.286 0z"
+          ></path>
+          <path
+            fill="#333E48"
+            d="m39.312 11.135-4.063 4.062a14.29 14.29 0 0 1 .995 16.159L28.891 24l-4.006-9.413h-.02V27.31l7.938 7.938a14.29 14.29 0 0 1-17.606 0l7.939-7.938V14.636l-4.027 9.365-7.355 7.355a14.29 14.29 0 0 1 .997-16.159l-4.063-4.062a20.001 20.001 0 1 0 30.624 0"
+          ></path>
+        </svg>
+        <a href="#" style="margin-left: 10px; font-size: 35px">OVERWATCH2</a>
+      </div>
+      <nav class="nav">
+        <ul>
+          <li>
+            <a href="#">
+              <h3>게임 정보</h3>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <h3>영웅</h3>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <h3>시즌</h3>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <h3>새소식</h3>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <video autoplay muted loop playsinline class="background-video">
+          <source
+            src="https://blz-contentstack-assets.akamaized.net/v3/assets/blt2477dcaf4ebd440c/bltf9c7db923323e5f5/6509d6e6d69ac7fc71afe366/F2P_Trailer.webm"
+          />
+        </video>
+        <div class="hero_content">
+          <img
+            src="https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt12c582d9d58631b9/6504c4b7af4949338d926e6c/Masthead_Overwatch2_Logo.png?format=webply&quality=90"
+            alt=""
+          />
+          <h1>쟁취할 가치가 있는 미래</h1>
+          <p>팀 기반 액션 • 무료 플레이</p>
+          <button>지금 플레이</button>
+        </div>
+      </section>
+
+      <section class="game-section play-section">
+        <div class="info">
+          <div class="info-text">
+            <h2>영웅이 되어 팀을 꾸리고 전투에서 승리하세요!</h2>
+            <p>
+              오버워치 2는 희망적인 미래를 배경으로 펼쳐지며, 언제든지 열려 있는
+              팀 기반 액션 무료 플레이 게임으로, 플레이어는 5대5 전장에서 난투를
+              벌이게 됩니다. 시간을 넘나드는 자유의 전사, 비트를 연주하는 전장의
+              DJ 등 30명이 넘는 개성 있고 다양한 영웅 중 한 명이 되어 전 세계
+              곳곳에서 벌어지는 전투에 뛰어드세요.
+            </p>
+          </div>
+          <div class="game-video">
+            <iframe
+              width="1840"
+              height="1036"
+              src="https://www.youtube.com/embed/B7QTX7xKwqs?si=a3iXcz6CrpmBo98v"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="game-section season-section">
+        <div class="info">
+          <div class="game-video">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/mZR6lbjMFnk?si=sUtWVtnV2D9TNDiL"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="info-text info-text-white">
+            <h2>오버워치 2 역사상 가장 과감한 게임플레이 혁신이 찾아옵니다</h2>
+            <p>
+              15시즌에서는 오버워치 2에 일대 혁신을 가져올 새로운 게임플레이
+              요소, 특전이 추가됩니다. 특전은 경기 진행 중에 해제하는 영웅
+              업그레이드로, 전략과 플레이스타일을 변화시킵니다. 또한 2025년도
+              경쟁전의 막이 오르면 등급을 올리며 명예와 영광을 좇고, 나아가
+              은하계 무기 스킨과 독점 장식품 등 색다른 보상을 획득할 수
+              있습니다. 그 외에도 특전 업 이벤트에 참여해 매주 도전 과제를
+              완료하면 비 오는 날 메르시와 전설 전리품 상자 등 풍성한 보물이
+              증정됩니다. 끝으로, 비휴 젠야타 신화 스킨도 놓치지 마세요.
+              오버워치 2 역사상 가장 과감하고 흥미진진한 시즌이 시작됩니다!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="game-section heros-section">
+        <div class="info" style="width: 1400px; gap: 100px">
+          <div class="info-text heros-text">
+            <h2>영웅</h2>
+            <div class="heros-button">
+              <button onclick="changeHero(0)">
+                <img
+                  src="https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/bltf0889daa1ef606db/6504cff74d2a764cb7973991/Tank.svg?format=webply&quality=90"
+                  alt=""
+                />
+              </button>
+              <button onclick="changeHero(1)">
+                <img
+                  src="https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt05d482c88096959a/6504cff7d9caa1285f64b6bd/Damage.svg?format=webply&quality=90"
+                  alt=""
+                />
+              </button>
+              <button onclick="changeHero(2)">
+                <img
+                  src="https://blz-contentstack-images.akamaized.net/v3/assets/blt2477dcaf4ebd440c/blt3ccd5df488163b33/6504cff7fc2ae4d7c50445c4/Support.svg?format=webply&quality=90"
+                  alt=""
+                />
+              </button>
+            </div>
+            <h3 id="hero-title">돌격</h3>
+            <p id="hero-description">
+              돌격 영웅은 피해를 흡수하고 뭉쳐 있는 적들이나 비좁은 요충지와
+              같이 요새화된 거점을 무너뜨립니다. 돌격 영웅은 아군의 선두 자리에
+              서게 됩니다.
+            </p>
+            <button class="heros-view"><a href="">모든 영웅 보기</a></button>
+          </div>
+          <div class="heros-type">
+            <div class="heros-img" id="hero-image">
+              <!-- <img src="img/Tank_-_Doomfist.webp" alt="" /> -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-section">
+        <div class="top-section">
+          <div>
+            <a href="https://blizzard.com/"
+              ><img src="img/blizz_blue_logo.png" alt=""
+            /></a>
+          </div>
+          <div class="top-right">
+            <div class="top-info1">2025 Blizzard Entertainment, Inc.</div>
+            <div class="top-info1">
+              여기서 언급된 다른 모든 상표는 각 소유권자들의 자산입니다.
+            </div>
+            <div class="top-info2">
+              <div>개인정보 처리방침</div>
+              <div>법률 관련 문서</div>
+              <div>이용 약관</div>
+              <div>쿠키정보 처리방침</div>
+              <div>쿠키 설정</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
